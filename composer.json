@@ -1,0 +1,36 @@
+{
+  "name": "smodav/message-broker",
+  "description": "Redis based message broker",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "David Mjomba",
+      "email": "smodavprivate@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "ext-json": "*",
+    "ext-redis": "*",
+    "ext-pcntl": "*",
+    "symfony/process": "^6.1",
+    "nesbot/carbon": "^2.59",
+    "laravel/framework": "^9.20"
+  },
+  "suggest": {
+    "ext-redis": "Required to use the Redis PHP driver."
+  },
+  "autoload": {
+    "psr-4": {
+      "SmoDav\\MessageBroker\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "SmoDav\\MessageBroker\\MessageBrokerServiceProvider"
+      ]
+    }
+  }
+}
