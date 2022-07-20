@@ -12,15 +12,6 @@ use SmoDav\MessageBroker\Commands\Terminate;
 class MessageBrokerServiceProvider extends ServiceProvider
 {
     /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-    }
-
-    /**
      * Bootstrap services.
      *
      * @return void
