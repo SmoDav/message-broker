@@ -3,11 +3,11 @@
 namespace SmoDav\MessageBroker\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
-use SmoDav\MessageBroker\Supervisors\Supervisor;
+use SmoDav\MessageBroker\Traits\CommandSendsSignal;
 
 class Terminate extends Command
 {
+    use CommandSendsSignal;
     /**
      * The name and signature of the console command.
      *
@@ -29,14 +29,7 @@ class Terminate extends Command
      */
     public function handle()
     {
-        $key = Supervisor::getCacheKeyByName($this->argument('stream'), $this->argument('group'));
-
-        $processId = Cache::get($key);
-
-        if ($processId) {
-            posix_kill($processId, SIGTERM);
-            $this->info("Terminated supervisor with PID {$processId}");
-        }
+        $this->sendSignal(SIGTERM, 'Terminated supervisor');
 
         return 0;
     }

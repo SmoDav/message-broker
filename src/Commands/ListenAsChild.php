@@ -32,12 +32,15 @@ class ListenAsChild extends Command
     {
         ini_set('default_socket_timeout', -1);
 
+        /** @var string $stream */
         $stream = $this->argument('stream');
+        /** @var string $group */
         $group = $this->argument('group');
+        /** @var string $name */
         $name = $this->argument('name');
 
         $timeout = (int) ($this->option('timeout') ?? '60');
-        $sleep = (float) ($this->option('sleep') ?? '1');
+        $sleep = (int) ($this->option('sleep') ?? '1');
         $restart = (int) ($this->option('restart') ?? '60');
         $pending = $this->option('pending') == 'true';
 

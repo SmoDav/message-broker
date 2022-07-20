@@ -6,7 +6,6 @@ use Closure;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\Facades\Cache;
-use JetBrains\PhpStorm\NoReturn;
 use SmoDav\MessageBroker\Traits\ListensForSignals;
 use SmoDav\MessageBroker\Workers\WorkerPool;
 use Symfony\Component\Process\Exception\ExceptionInterface;
@@ -114,7 +113,6 @@ class Supervisor
      *
      * @return void
      */
-    #[NoReturn]
     public function terminate(int $status = 0): void
     {
         $this->working = false;
@@ -145,6 +143,7 @@ class Supervisor
 
         $this->persist();
 
+        /** @phpstan-ignore-next-line  */
         while (true) {
             sleep(1);
 
@@ -196,7 +195,9 @@ class Supervisor
             // the current number of worker processes per queue for easy load monitoring.
             $this->persist();
         } catch (Throwable $e) {
-            app(ExceptionHandler::class)->report($e);
+            /** @var ExceptionHandler $handler */
+            $handler = app(ExceptionHandler::class);
+            $handler->report($e);
         }
     }
 

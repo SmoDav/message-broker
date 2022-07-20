@@ -3,11 +3,11 @@
 namespace SmoDav\MessageBroker\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
-use SmoDav\MessageBroker\Supervisors\Supervisor;
+use SmoDav\MessageBroker\Traits\CommandSendsSignal;
 
 class PauseProcessing extends Command
 {
+    use CommandSendsSignal;
     /**
      * The name and signature of the console command.
      *
@@ -29,14 +29,7 @@ class PauseProcessing extends Command
      */
     public function handle()
     {
-        $key = Supervisor::getCacheKeyByName($this->argument('stream'), $this->argument('group'));
-
-        $processId = Cache::get($key);
-
-        if ($processId) {
-            posix_kill($processId, SIGUSR2);
-            $this->info("Paused supervisor with PID {$processId}");
-        }
+        $this->sendSignal(SIGUSR2, 'Paused supervisor');
 
         return 0;
     }

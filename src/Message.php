@@ -13,7 +13,7 @@ class Message
      * @param MessageType          $type
      * @param array<string, mixed> $payload
      */
-    public function __construct(public MessageType $type, public array $payload)
+    final public function __construct(public MessageType $type, public array $payload)
     {
     }
 
@@ -29,9 +29,10 @@ class Message
         /** @var string $type */
         $type = $input['type'];
 
+        /** @var array<string, mixed> $payload */
         $payload = (array) json_decode($input['payload']);
 
-        return new static(MessageType::tryFrom((int) $type), $payload);
+        return new static(MessageType::from((int) $type), $payload);
     }
 
     /**

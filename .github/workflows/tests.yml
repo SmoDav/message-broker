@@ -1,0 +1,21 @@
+name: JWT-Auth Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          coverage: "xdebug"
+      - uses: actions/checkout@v2
+      - name: Install composer dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Static Checks
+        run: ./vendor/bin/phpstan analyse
+

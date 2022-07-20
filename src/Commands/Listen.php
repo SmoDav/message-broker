@@ -32,7 +32,12 @@ class Listen extends Command
      */
     public function handle()
     {
-        $config = new SupervisorOptions($this->argument('stream'), $this->argument('group'), 2, 3);
+        /** @var string $stream */
+        $stream = $this->argument('stream');
+        /** @var string $group */
+        $group = $this->argument('group');
+
+        $config = new SupervisorOptions($stream, $group, 2, 3);
 
         $supervisor = new Supervisor($config, fn ($type, $line) => $this->output->write($line), base_path());
 

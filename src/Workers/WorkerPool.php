@@ -10,10 +10,10 @@ use Symfony\Component\Process\Process;
 
 class WorkerPool
 {
-    /** @var Collection<WorkerProcess> */
+    /** @var Collection<int, WorkerProcess> */
     protected Collection $processes;
 
-    /** @var Collection<WorkerProcess> */
+    /** @var Collection<int, WorkerProcess> */
     protected Collection $terminating;
 
     /** @var bool */
@@ -29,8 +29,8 @@ class WorkerPool
      */
     public function __construct(protected SupervisorOptions $options, protected string $directory, Closure|null $output = null)
     {
-        $this->processes = collect();
-        $this->terminating = collect();
+        $this->processes = collect([]);
+        $this->terminating = collect([]);
 
         $this->output = $output ?: function () {
         };
@@ -207,7 +207,7 @@ class WorkerPool
     /**
      * Remove any non-running processes from the terminating process list.
      *
-     * @return Collection<WorkerProcess>
+     * @return Collection<int, WorkerProcess>
      */
     public function pruneTerminatingProcesses(): Collection
     {

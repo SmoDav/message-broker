@@ -1,0 +1,9 @@
+parameters:
+  paths:
+    - src
+  excludePaths:
+    - ./vendor
+  level: 9
+  checkMissingIterableValueType: false
+  ignoreErrors:
+    - '#Call to an undefined static method Illuminate\\Support\\Facades\\Redis::command\(\)#'

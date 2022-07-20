@@ -24,7 +24,7 @@ class Worker
     }
 
     /**
-     * Sendt the given output.
+     * Send the given output.
      *
      * @param string $message
      *
@@ -147,9 +147,9 @@ class Worker
     public function sleep(int|float $seconds): void
     {
         if ($seconds < 1) {
-            usleep($seconds * 1000000);
+            usleep((int) $seconds * 1000000);
         } else {
-            sleep($seconds);
+            sleep((int) $seconds);
         }
     }
 
@@ -187,7 +187,9 @@ class Worker
     public function kill(ExitCode $exitCode): never
     {
         if (extension_loaded('posix')) {
-            posix_kill(getmypid(), SIGKILL);
+            if ($processId = getmypid()) {
+                posix_kill($processId, SIGKILL);
+            }
         }
 
         exit($exitCode->value);

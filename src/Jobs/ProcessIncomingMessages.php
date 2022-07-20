@@ -99,9 +99,11 @@ class ProcessIncomingMessages implements Job
             return null;
         }
 
+        /** @var string $streamId */
         $streamId = $input[0][0];
         $attempts = $input[0][3];
 
+        /** @var array<string ,string> $input */
         $input = Redis::command('xClaim', [$this->stream, $this->group, $this->consumer, 0, [$streamId]]);
 
         if ($attempts > $this->maxAttempts) {
@@ -137,9 +139,11 @@ class ProcessIncomingMessages implements Job
      */
     protected function processMessage(): void
     {
+        /** @var string $streamId */
         $streamId = array_key_first($this->message);
 
         if ($streamId) {
+            /** @var array<string, string> $item */
             $item = $this->message[$streamId];
 
             $this->evaluatePayload($item);
@@ -163,7 +167,7 @@ class ProcessIncomingMessages implements Job
     /**
      * Acknowledge and delete the payload.
      *
-     * @param array $streamIds
+     * @param array<array-key, string> $streamIds
      *
      * @return void
      */
@@ -177,13 +181,13 @@ class ProcessIncomingMessages implements Job
     /**
      * Evaluate the payload and dispatch it.
      *
-     * @param $payload
+     * @param array<string, string> $payload
      *
      * @throws Exception
      *
      * @return void
      */
-    protected function evaluatePayload($payload): void
+    protected function evaluatePayload(array $payload): void
     {
         $message = Message::fromArray($payload);
 

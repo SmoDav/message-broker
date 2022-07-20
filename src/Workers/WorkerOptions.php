@@ -2,8 +2,6 @@
 
 namespace SmoDav\MessageBroker\Workers;
 
-use InvalidArgumentException;
-
 class WorkerOptions
 {
     /**
@@ -24,24 +22,6 @@ class WorkerOptions
         public int $sleep = 3,
         public int $restart = 60,
     ) {
-    }
-
-    /**
-     * Create new instance from JSON string.
-     *
-     * @param string $config
-     *
-     * @return static
-     */
-    public static function fromJson(string $config): self
-    {
-        $config = json_decode($config);
-
-        if (!isset($config->name, $config->pending, $config->timeout)) {
-            throw new InvalidArgumentException('The provided config is invalid.');
-        }
-
-        return new static($config->name, $config->timeout, $config->pending);
     }
 
     /**
@@ -77,16 +57,6 @@ class WorkerOptions
             'sleep' => $this->sleep,
             'restart' => $this->restart,
         ];
-    }
-
-    /**
-     * Convert to JSON.
-     *
-     * @return string
-     */
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
     }
 
     /**
